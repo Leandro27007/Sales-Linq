@@ -14,6 +14,19 @@ namespace Sales.AppServices.Services
         {
             this.ventaDB = ventaDB;
         }
+
+        public async Task<ServiceResult> GetTotalDeVentas(int idUsuario)
+        {
+            ServiceResult result = new();
+
+            var dbResult = await ventaDB.GetTotalDeVentas(idUsuario);
+
+            result.Data = dbResult;
+
+            return result;
+
+        }
+
         public async Task<ServiceResult> GetVenta(string numeroVenta)
         {               
             ServiceResult result = new ServiceResult();

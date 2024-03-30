@@ -1,43 +1,26 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Sales.AppServices.Contracts;
-using Sales.AppServices.Dtos;
 
 namespace Sales.API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class VentaController : ControllerBase
+    public class VentaController : Controller
     {
-        IVentaService _ventaService;
-        public VentaController(IVentaService ventaService)
+        private readonly IVentaService ventaServ;
+
+        public VentaController(IVentaService ventaServ)
         {
-            this._ventaService = ventaService;
+            this.ventaServ = ventaServ;
         }
 
-        [HttpGet("GetVentas")]
-        public async Task<IActionResult> GetVentas()
+        [HttpGet("GetTotalVentasByUser{idUsuario}")]
+        public async Task<IActionResult> GetTotalVentasByUser(int idUsuario)
         {
-            var result = await this._ventaService.GetVentas();
+            var result = await this.ventaServ.GetTotalDeVentas(idUsuario);
             if (!result.Success)
                 return BadRequest(result);
 
 
             return Ok(result);
         }
-
-        [HttpPost("CreateVenta")]
-        public async Task<IActionResult> CreateVenta([FromBody] HacerVentaDTO venta)
-        {
-            var result = await this._ventaService.HacerVenta(venta);
-
-            if (!result.Success)
-                return BadRequest(result);
-
-            return Ok(result);
-        }
-
-
-
     }
 }

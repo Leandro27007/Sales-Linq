@@ -77,7 +77,47 @@ namespace Sales.Infraestructure.DataSeeding
                 }
 
 
-            
+                //Venta
+
+                if (!(await db.Venta.AnyAsync()))
+                {
+
+
+                    var usuario = await db.Usuario.FirstAsync();
+                    var documento = await db.TipoDocumentoVenta.FirstAsync();
+
+                    List<DetalleVenta> detallesVentas = new()
+                    {
+                        new DetalleVenta()
+                        {
+                            IdProducto = 2654,
+                            Cantidad = 2,
+                            Precio = 350, //TODO: Get a real product price and remove this hardcode
+                            Total = (2 * 350)
+                        }
+                    };
+
+
+                    Venta venta = new Venta()
+                    {
+                        NumeroVenta = "123456",
+                        CocumentoCliente = "000131801",
+                        IdTipoDocumentoVenta = documento.Id,
+                        IdUsuario = usuario.Id,
+                        IdUsuarioCreacion = usuario.Id,
+                        ImpuestoTotal = 200,
+                        NombreCliente = "Leandro",
+                        Total = 900,
+                        FechaRegistro = DateTime.UtcNow,
+                        DetalleVentas = detallesVentas
+
+                    };
+
+                    db.Venta.Add(venta);
+
+                    await db.SaveChangesAsync();
+                }
+
 
 
 

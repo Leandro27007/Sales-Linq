@@ -29,6 +29,7 @@ namespace Sales.Infraestructure.Dao
 
                 //LINQ
                 var query = await (from pdt in context.Producto
+                                   where pdt.IdCategoria == idCategoria
                              join cat in context.Categoria on pdt.IdCategoria equals cat.Id
                                    where pdt.Eliminado == false
                              && cat.Eliminado == false
@@ -39,8 +40,9 @@ namespace Sales.Infraestructure.Dao
                                  CodigoBarra = pdt.CodigoBarra,
                                  Marca = pdt.Marca,
                                  Stock = pdt.Stock,
-                                 NombreCategoria = cat.Descripcion
-
+                                 NombreCategoria = cat.Descripcion,
+                                 EsActivo = pdt.EsActivo
+                                 
                              }).ToListAsync();
 
                 return query;
